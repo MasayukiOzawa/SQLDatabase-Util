@@ -27,7 +27,6 @@ SELECT
     er.total_elapsed_time AS exec_requests_total_elapsed_time,
     es.cpu_time,
     er.cpu_time AS exec_requests_cpu_time,
-	er.dop,
     es.memory_usage,
     es.total_scheduled_time,
     es.reads,
@@ -57,9 +56,9 @@ SELECT
     es.login_name,
     es.client_version,
     es.client_interface_name,
-    er_plan.query_plan AS er_plan,
-	er.query_hash,
-    er.query_plan_hash
+    er_plan.query_plan AS er_plan
+--    ,er.query_hash,
+--    er.query_plan_hash
 FROM
     sys.dm_exec_requests er WITH (NOLOCK)
     LEFT JOIN
@@ -84,6 +83,8 @@ FROM
 	tsu.request_id = er.request_id
 WHERE
     es.session_id <> @@SPID
+	AND
+	es.session_id >=50
 ORDER BY
 	exec_requests_cpu_time DESC,
 	cpu_time DESC, 

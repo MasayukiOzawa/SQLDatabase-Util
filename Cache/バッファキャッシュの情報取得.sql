@@ -1,9 +1,39 @@
 ﻿SET NOCOUNT ON
 GO
 
-
 /********************************************/
 -- バッファキャッシュの情報取得
+/********************************************/
+SELECT 
+	GETDATE() AS DATE, 
+	database_id,
+	CASE database_id 
+		WHEN 32767 THEN 'ResourceDb' 
+		ELSE db_name(database_id) 
+	END AS [Database_name], 
+	count(*) AS [Page Count], 
+	count(*) * 8.0 AS [Page Size (KB)]
+FROM
+	[sys].[dm_os_buffer_descriptors] WITH (NOLOCK)
+GROUP BY
+	db_name(database_id), 
+	[database_id]
+UNION
+SELECT
+	GETDATE(),
+	0,
+	'ALL', 
+	count(*),
+	count(*) * 8.0
+FROM
+	[sys].[dm_os_buffer_descriptors] WITH (NOLOCK)
+ORDER BY 
+	[database_id] ASC
+OPTION (RECOMPILE)
+
+
+/********************************************/
+-- バッファキャッシュの情報取得 (詳細)
 /********************************************/
 SELECT 
 	GETDATE() AS DATE, 
@@ -35,40 +65,6 @@ GROUP BY
 	p.object_id,
 	index_id,
 	partition_number
-ORDER BY 
-	[database_id] ASC
-OPTION (RECOMPILE)
-
-
-
-
-
-/********************************************/
--- バッファキャッシュの情報取得
-/********************************************/
-SELECT 
-	GETDATE() AS DATE, 
-	database_id,
-	CASE database_id 
-		WHEN 32767 THEN 'ResourceDb' 
-		ELSE db_name(database_id) 
-	END AS [Database_name], 
-	count(*) AS [Page Count], 
-	count(*) * 8.0 AS [Page Size (KB)]
-FROM
-	[sys].[dm_os_buffer_descriptors] WITH (NOLOCK)
-GROUP BY
-	db_name(database_id), 
-	[database_id]
-UNION
-SELECT
-	GETDATE(),
-	0,
-	'ALL', 
-	count(*),
-	count(*) * 8.0
-FROM
-	[sys].[dm_os_buffer_descriptors] WITH (NOLOCK)
 ORDER BY 
 	[database_id] ASC
 OPTION (RECOMPILE)
