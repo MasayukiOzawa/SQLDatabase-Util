@@ -3,10 +3,6 @@
 -- クエリ結果→ SQL Server → 結果をテキストで表示を
 -- タブ区切り / 各列に表示される最大文字数を 8000 で取得する
 /*******************************************/
-
-USE master
-GO
-
 SET NOCOUNT ON
 GO
 
@@ -46,8 +42,7 @@ SELECT TOP 300
 	[last_rows],
 	[min_rows],
 	[max_rows],
-	/*
-	--SQL Server 2012 SP3 / SQL Server 2016 向けの列
+	-- SQL Database v12 向けの情報
 	[total_dop],
 	[last_dop],
 	[min_dop],
@@ -72,7 +67,6 @@ SELECT TOP 300
 	[last_used_threads]
 	[min_used_threads],
 	[max_used_threads],
-	*/
 	[plan_generation_num],
 	[creation_time],
 	[last_execution_time],
