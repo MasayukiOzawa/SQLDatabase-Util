@@ -11,6 +11,7 @@ SELECT
     END AS text,
     er.command,
     es.status,
+	er.blocking_session_id,
     er.wait_type,
     er.last_wait_type,
     er.wait_resource,
@@ -68,7 +69,7 @@ FROM
     sys.dm_exec_sql_text(ec.most_recent_sql_handle) AS ec_text
 WHERE
     es.session_id <> @@SPID
+	and
+	start_time IS NOT NULL
 ORDER BY
- 
     session_id ASC
-
