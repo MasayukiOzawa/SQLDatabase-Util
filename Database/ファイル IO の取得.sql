@@ -48,7 +48,23 @@ SELECT
 	RTRIM(t1.instance_name) AS instance_name,
 	t2.cntr_value AS [Read Bytes/sec],
 	t3.cntr_value AS [Write Bytes/sec],
-	t4.cntr_value AS [Transfers/Sec]
+	t4.cntr_value AS [Transfers/Sec],
+	CASE t6.cntr_value
+		WHEN 0 THEN 0
+		ELSE t5.cntr_value / t6.cntr_value 
+	END AS [Avg. Bytes/Read],
+	CASE t8.cntr_value
+		WHEN 0 THEN 0
+		ELSE t7.cntr_value / t8.cntr_value 
+	END AS [Avg. Bytes/Write],
+	CASE t10.cntr_value
+		WHEN 0 THEN 0
+		ELSE t9.cntr_value / t10.cntr_value 
+	END AS [Avg. microsec/Read],
+	CASE t12.cntr_value
+		WHEN 0 THEN 0
+		ELSE t11.cntr_value / t12.cntr_value 
+	END AS [Avg. microsec/Write]
 FROM
 	sys.dm_os_performance_counters t1
 	INNER JOIN
@@ -66,6 +82,46 @@ FROM
 	FROM sys.dm_os_performance_counters
 	WHERE counter_name = 'Transfers/Sec') AS t4
 	ON t1.instance_name = t4.instance_name
+	INNER JOIN
+	(SELECT	instance_name,cntr_value
+	FROM sys.dm_os_performance_counters
+	WHERE counter_name = 'Avg. Bytes/Read') AS t5
+	ON t1.instance_name = t5.instance_name
+	INNER JOIN
+	(SELECT	instance_name,cntr_value
+	FROM sys.dm_os_performance_counters
+	WHERE counter_name = 'Avg. Bytes/Read BASE') AS t6
+	ON t1.instance_name = t6.instance_name
+	INNER JOIN
+	(SELECT	instance_name,cntr_value
+	FROM sys.dm_os_performance_counters
+	WHERE counter_name = 'Avg. Bytes/Write') AS t7
+	ON t1.instance_name = t7.instance_name
+	INNER JOIN
+	(SELECT	instance_name,cntr_value
+	FROM sys.dm_os_performance_counters
+	WHERE counter_name = 'Avg. Bytes/Write BASE') AS t8
+	ON t1.instance_name = t8.instance_name
+	INNER JOIN
+	(SELECT	instance_name,cntr_value
+	FROM sys.dm_os_performance_counters
+	WHERE counter_name = 'Avg. microsec/Read') AS t9
+	ON t1.instance_name = t9.instance_name
+	INNER JOIN
+	(SELECT	instance_name,cntr_value
+	FROM sys.dm_os_performance_counters
+	WHERE counter_name = 'Avg. microsec/Read BASE') AS t10
+	ON t1.instance_name = t10.instance_name
+	INNER JOIN
+	(SELECT	instance_name,cntr_value
+	FROM sys.dm_os_performance_counters
+	WHERE counter_name = 'Avg. microsec/Write') AS t11
+	ON t1.instance_name = t11.instance_name
+	INNER JOIN
+	(SELECT	instance_name,cntr_value
+	FROM sys.dm_os_performance_counters
+	WHERE counter_name = 'Avg. microsec/Write BASE') AS t12
+	ON t1.instance_name = t12.instance_name
 WHERE
 	t1.object_name LIKE '%HTTP Storage%'
 	AND t1.instance_name <> '_Total'
@@ -73,8 +129,15 @@ GROUP BY
 	t1.instance_name,
 	t2.cntr_value,
 	t3.cntr_value,
-	t4.cntr_value
+	t4.cntr_value,
+	t5.cntr_value,
+	t6.cntr_value,
+	t7.cntr_value,
+	t8.cntr_value,
+	t9.cntr_value,
+	t10.cntr_value,
+	t11.cntr_value,
+	t12.cntr_value
 ORDER BY
 	t1.instance_name
 OPTION (RECOMPILE)
-
