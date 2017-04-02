@@ -2,7 +2,8 @@
 SELECT
 	o.name,
 	i.name AS index_name,
-	ni.name AS physical_name,
+	im.physical_name,
+	i.type_desc,
 	rg.index_id,
 	rg.partition_number,
 	rg.row_group_id,
