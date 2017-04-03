@@ -1,4 +1,4 @@
--- ��X�g�A�C���f�b�N�X�̈��k���̊m�F
+﻿-- 列ストアインデックスの圧縮情報の確認
 SELECT
 	o.name,
 	i.name AS index_name,

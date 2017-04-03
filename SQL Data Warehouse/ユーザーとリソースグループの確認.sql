@@ -1,5 +1,5 @@
--- ƒ†[ƒU[‚ÆƒŠƒ\[ƒXƒOƒ‹[ƒv‚ÌŠm”F
--- https://docs.microsoft.com/ja-jp/azure/sql-data-warehouse/sql-data-warehouse-develop-concurrency#a-namequeued-query-detection-and-other-dmvsaƒLƒ…[‚É”z’u‚³‚ê‚½ƒNƒGƒŠ‚ÌŒŸo‚Æ‚»‚Ì‘¼‚Ì-dmv
+ï»¿-- ãƒ¦ãƒ¼ã‚¶ãƒ¼ã¨ãƒªã‚½ãƒ¼ã‚¹ã‚°ãƒ«ãƒ¼ãƒ—ã®ç¢ºèª
+-- https://docs.microsoft.com/ja-jp/azure/sql-data-warehouse/sql-data-warehouse-develop-concurrency#a-namequeued-query-detection-and-other-dmvsaã‚­ãƒ¥ãƒ¼ã«é…ç½®ã•ã‚ŒãŸã‚¯ã‚¨ãƒªã®æ¤œå‡ºã¨ãã®ä»–ã®-dmv
 SELECT     r.name AS role_principal_name
         ,m.name AS member_principal_name
 FROM    sys.database_role_members rm

@@ -1,5 +1,5 @@
--- “¯ÀsƒLƒ…[‚ÌŠm”F
--- https://docs.microsoft.com/ja-jp/azure/sql-data-warehouse/sql-data-warehouse-develop-concurrency#a-namequeued-query-detection-and-other-dmvsaƒLƒ…[‚É”z’u‚³‚ê‚½ƒNƒGƒŠ‚ÌŒŸo‚Æ‚»‚Ì‘¼‚Ì-dmv
+ï»¿-- åŒæ™‚å®Ÿè¡Œã‚­ãƒ¥ãƒ¼ã®ç¢ºèª
+-- https://docs.microsoft.com/ja-jp/azure/sql-data-warehouse/sql-data-warehouse-develop-concurrency#a-namequeued-query-detection-and-other-dmvsaã‚­ãƒ¥ãƒ¼ã«é…ç½®ã•ã‚ŒãŸã‚¯ã‚¨ãƒªã®æ¤œå‡ºã¨ãã®ä»–ã®-dmv
 SELECT   
 		r.[request_id]                 AS Request_ID
         ,r.[status]                 AS Request_Status
@@ -12,7 +12,7 @@ FROM    sys.dm_pdw_exec_requests r
 ORDER BY Request_StartTime Desc
 
 
--- ƒŠƒ\[ƒX‚Ì—v‹‘Ò‚¿‚ÌŠm”F
+-- ãƒªã‚½ãƒ¼ã‚¹ã®è¦æ±‚å¾…ã¡ã®ç¢ºèª
 SELECT  w.[wait_id]
 ,       w.[session_id]
 ,       w.[type]            AS Wait_type

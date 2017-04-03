@@ -1,5 +1,5 @@
--- “Œvî•ñ‚Ìæ“¾
--- https://docs.microsoft.com/ja-jp/azure/sql-data-warehouse/sql-data-warehouse-tables-statistics#a-nameexamples-update-statisticsa—á-“Œv‚ÌXV
+ï»¿-- çµ±è¨ˆæƒ…å ±ã®å–å¾—
+-- https://docs.microsoft.com/ja-jp/azure/sql-data-warehouse/sql-data-warehouse-tables-statistics#a-nameexamples-update-statisticsaä¾‹-çµ±è¨ˆã®æ›´æ–°
 SELECT
     sm.[name] AS [schema_name],
     tb.[name] AS [table_name],

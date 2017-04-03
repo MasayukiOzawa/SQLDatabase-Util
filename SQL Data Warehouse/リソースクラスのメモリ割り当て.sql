@@ -1,5 +1,5 @@
--- ƒƒ‚ƒŠŠ„‚è“–‚Ä‚ÌŠm”F
--- https://docs.microsoft.com/ja-jp/azure/sql-data-warehouse/sql-data-warehouse-develop-concurrency#a-namememory-allocationaƒƒ‚ƒŠ‚ÌŠ„‚è“–‚Ä
+ï»¿-- ãƒ¡ãƒ¢ãƒªå‰²ã‚Šå½“ã¦ã®ç¢ºèª
+-- https://docs.microsoft.com/ja-jp/azure/sql-data-warehouse/sql-data-warehouse-develop-concurrency#a-namememory-allocationaãƒ¡ãƒ¢ãƒªã®å‰²ã‚Šå½“ã¦
 
 WITH rg
 AS

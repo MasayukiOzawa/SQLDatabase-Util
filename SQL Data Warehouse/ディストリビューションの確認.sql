@@ -1,4 +1,4 @@
--- ƒfƒBƒXƒgƒŠƒrƒ…[ƒVƒ‡ƒ“‚ÌŠm”F
+ï»¿-- ãƒ‡ã‚£ã‚¹ãƒˆãƒªãƒ“ãƒ¥ãƒ¼ã‚·ãƒ§ãƒ³ã®ç¢ºèª
 SELECT
 	* 
 FROM 

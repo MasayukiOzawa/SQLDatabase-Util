@@ -1,4 +1,4 @@
--- ƒIƒuƒWƒFƒNƒg‚Ìƒf[ƒ^Ši”[ó‘Ô‚Ìæ“¾
+ï»¿-- ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ãƒ‡ãƒ¼ã‚¿æ ¼ç´çŠ¶æ…‹ã®å–å¾—
 SELECT
 	o.name,
 	m.physical_name,
@@ -53,7 +53,7 @@ ORDER BY
 	o.name, ps.index_id, ps.partition_number,ps.distribution_id
 GO
 
--- https://docs.microsoft.com/ja-jp/azure/sql-data-warehouse/sql-data-warehouse-tables-overview#a-nametable-size-queriesaƒe[ƒuƒ‹-ƒTƒCƒY‚ÌƒNƒGƒŠ
+-- https://docs.microsoft.com/ja-jp/azure/sql-data-warehouse/sql-data-warehouse-tables-overview#a-nametable-size-queriesaãƒ†ãƒ¼ãƒ–ãƒ«-ã‚µã‚¤ã‚ºã®ã‚¯ã‚¨ãƒª
 WITH base
 AS
 (

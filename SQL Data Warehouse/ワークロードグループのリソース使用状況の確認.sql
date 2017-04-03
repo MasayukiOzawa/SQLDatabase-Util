@@ -1,4 +1,4 @@
-SELECT
+﻿SELECT
 	wg.pdw_node_id, 
 	n.type,
 	n.name,
