@@ -1,4 +1,4 @@
-/********************************************/
+﻿/********************************************/
 -- 2 点で情報の取得を行い、特定期間の I/O を取得
 /********************************************/
 
@@ -8,7 +8,7 @@
 SELECT 
 	[database_files].[name], 
 	[database_files].[type_desc],
-	[database_files].[size] * 8.0 AS size,  
+	[database_files].[size] * 8.0 AS size_KB,  
 	[database_files].[max_size] * 8.0 AS max_size_KB,  
 	[database_files].[growth],
 	CASE [is_percent_growth]

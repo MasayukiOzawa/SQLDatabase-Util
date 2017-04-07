@@ -1,4 +1,7 @@
-﻿SELECT
+﻿SET NOCOUNT ON
+
+SELECT
+	GETDATE() AS counter_date,
 	instance_name,
 	[Lock waits],
 	[Memory grant queue waits],
