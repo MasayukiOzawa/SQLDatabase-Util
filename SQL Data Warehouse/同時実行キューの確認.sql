@@ -1,5 +1,6 @@
-﻿-- 同時実行キューの確認
--- https://docs.microsoft.com/ja-jp/azure/sql-data-warehouse/sql-data-warehouse-develop-concurrency#a-namequeued-query-detection-and-other-dmvsaキューに配置されたクエリの検出とその他の-dmv
+﻿-- https://docs.microsoft.com/ja-jp/azure/sql-data-warehouse/sql-data-warehouse-develop-concurrency#a-namequeued-query-detection-and-other-dmvsaキューに配置されたクエリの検出とその他の-dmv
+
+-- 同時実行キューの確認
 SELECT   
 		r.[request_id]                 AS Request_ID
         ,r.[status]                 AS Request_Status
@@ -9,8 +10,9 @@ SELECT
 		,r.command
         ,r.resource_class                         AS Request_resource_class
 FROM    sys.dm_pdw_exec_requests r
+WHERE r.[status] NOT IN('Completed', 'Cancelled', 'Failed')
 ORDER BY Request_StartTime Desc
-
+GO
 
 -- リソースの要求待ちの確認
 SELECT  w.[wait_id]
@@ -43,4 +45,5 @@ SELECT  w.[wait_id]
 FROM    sys.dm_pdw_waits w
 JOIN    sys.dm_pdw_exec_sessions s  ON w.[session_id] = s.[session_id]
 JOIN    sys.dm_pdw_exec_requests r  ON w.[request_id] = r.[request_id]
-WHERE    w.[session_id] <> SESSION_ID();
+WHERE    w.[session_id] <> SESSION_ID()
+GO
