@@ -15,6 +15,7 @@ SELECT
 	, si.type_desc
 	, sp.data_compression_desc
 	, dps.reserved_page_count
+	, dps.reserved_page_count * 8.0 / 1024 AS [reserved_page_size (MB)]
 	, dps.row_count
 	, ius.user_seeks
 	, ius.last_user_seek
@@ -87,7 +88,7 @@ FROM
 	sp.partition_number = dps.partition_number
 	CROSS APPLY
 	(SELECT 
-		sc.name + ','
+		sc.name + '|'
 	FROM
 		sys.index_columns sic
 		INNER JOIN
@@ -106,7 +107,7 @@ FROM
 	) AS idxcolinfo(idxcolname)
 	CROSS APPLY
 	(SELECT 
-		sc.name + ','
+		sc.name + '|'
 	FROM
 		sys.index_columns sic
 		INNER JOIN
