@@ -4,6 +4,8 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 
+DROP PROCEDURE IF EXISTS [dbo].[usp_LiveMonitor]
+GO
 
 CREATE PROCEDURE [dbo].[usp_LiveMonitor]
 AS
@@ -98,7 +100,7 @@ SELECT
 FROM(
 	SELECT
 		CAST([CPU usage %] AS float) / CAST([CPU usage % base] AS float) * 100.0 AS [CPU Usage %],
-		CAST([Buffer cache hit ratio] AS float) / CAST([Buffer cache hit ratio] AS float) * 100.0 AS [Buffer Cache Hit %],
+		CAST([Buffer cache hit ratio] AS float) / CAST([Buffer cache hit ratio base] AS float) * 100.0 AS [Buffer Cache Hit %],
 		CAST([Cache Hit Ratio] AS float) / CAST([Cache Hit Ratio Base] AS float) * 100.0 AS [Plan Cache Hit %]
 	FROM
 		(
