@@ -1,11 +1,16 @@
 ﻿-- オブジェクトのデータ格納状態の取得
 SELECT
 	o.name,
+	t.name,
+	o.object_id,
+	ps.object_id,
 	m.physical_name,
 	i.name,
+	ni.name,
 	im.physical_name,
 	ps.index_id,
 	i.type_desc,
+	tp.distribution_policy_desc,
 	ps.partition_number,
 	ps.used_page_count,
 	ps.row_count,
@@ -14,41 +19,45 @@ SELECT
 FROM 
 	sys.dm_pdw_nodes_db_partition_stats ps
 	INNER JOIN
-	sys.pdw_nodes_tables t
+		sys.pdw_nodes_tables t
 	ON
-	ps.object_id = t.object_id
-	AND
-	ps.pdw_node_id = t.pdw_node_id
-	AND
-	ps.distribution_id = t.distribution_id
+		ps.object_id = t.object_id
+		AND
+		ps.pdw_node_id = t.pdw_node_id
+		AND
+		ps.distribution_id = t.distribution_id
 	LEFT JOIN
-	sys.pdw_table_mappings m
+		sys.pdw_table_mappings m
 	ON
-	m.physical_name = t.name
+		m.physical_name = t.name
 	LEFT JOIN
-	sys.objects o
+		sys.objects o
 	ON
-	o.object_id = m.object_id
+		o.object_id = m.object_id
 	LEFT JOIN
-	sys.pdw_nodes_indexes ni
+		sys.pdw_nodes_indexes ni
 	ON
-	ps.object_id = ni.object_id
-	AND
-	ps.index_id = ni.index_id
-	AND
-	ps.pdw_node_id = ni.pdw_node_id
-	AND
-	ps.distribution_id = ni.distribution_id
+		ps.object_id = ni.object_id
+		AND
+		ps.index_id = ni.index_id
+		AND
+		ps.pdw_node_id = ni.pdw_node_id
+		AND
+		ps.distribution_id = ni.distribution_id
 	LEFT JOIN
-	sys.pdw_index_mappings im
+		sys.pdw_index_mappings im
 	ON
-	im.physical_name = ni.name
-	LEFT JOIN sys.indexes i
+		im.physical_name = ni.name
+	LEFT JOIN 
+		sys.indexes i
 	ON
-	i.object_id = im.object_id
-	AND
-	i.index_id = im.index_id
-
+		i.object_id = im.object_id
+		AND
+		i.index_id = im.index_id
+	LEFT JOIN 
+		sys.pdw_table_distribution_properties tp
+	ON
+		tp.object_id = o.object_id
 ORDER BY
 	o.name, ps.index_id, ps.partition_number,ps.distribution_id
 GO
