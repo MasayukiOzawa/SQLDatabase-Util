@@ -1,3 +1,10 @@
+﻿/*******************************************************************************************/
+-- 2017/9/15 時点SQL DW の場合、集約した情報が取得されるまで 15～30 分程度のタイムラグがある
+-- 1 DWU = 7.5 DTU となっているため、加工している
+-- https://docs.microsoft.com/ja-jp/azure/sql-data-warehouse/sql-data-warehouse-get-started-create-support-ticket
+/*******************************************************************************************/
+
+-- 同一時間帯の情報を集約
 SELECT
 	CONVERT(datetime2(0), DATEADD(hh, 9, FORMAT(start_time, 'yyyy/MM/dd HH:mm'))) AS start_time_ja,
 	CONVERT(datetime2(0), FORMAT(start_time, 'yyyy/MM/dd HH:mm')) AS start_time_utc,
@@ -36,7 +43,7 @@ SELECT
 	  (CONVERT(bigint, AVG(avg_log_write_percent)))
 	 ) AS T(v)
 	) AS max_dwu_used,
-	CAST(AVG(dtu_limit) / 7.5 AS int) AS dwu_size,  -- https://docs.microsoft.com/ja-jp/azure/sql-data-warehouse/sql-data-warehouse-get-started-create-support-ticket
+	CAST(AVG(dtu_limit) / 7.5 AS int) AS dwu_size, 
 	CAST(AVG(dtu_limit) / 7.5 / 100 AS int) AS compute_node_count,
 	COUNT(*) AS data_count
 FROM 
@@ -51,16 +58,17 @@ GROUP BY
 GROUP BY
 	FORMAT(start_time, 'yyyy/MM/dd HH:mm')
 ORDER BY 
-	FORMAT(start_time, 'yyyy/MM/dd HH:mm') DESC
+	FORMAT(start_time, 'yyyy/MM/dd HH:mm') ASC
 GO
 
+-- 60 件の情報となっていないものを出力
 SELECT 
 	* 
 FROM(
 SELECT 
 	DATEADD(hh, 9, start_time) AS start_time_ja,
 	start_time AS start_time_utc,
-	CAST(AVG(dtu_limit) / 7.5 AS int) AS dwu_size,  -- https://docs.microsoft.com/ja-jp/azure/sql-data-warehouse/sql-data-warehouse-get-started-create-support-ticket
+	CAST(AVG(dtu_limit) / 7.5 AS int) AS dwu_size,
 	(SELECT MAX(v) FROM 
 	 (VALUES 
 	  (CONVERT(bigint, AVG(avg_cpu_percent))), 
@@ -90,5 +98,54 @@ GROUP BY
 WHERE
 	data_count <> 60 / compute_node_count
 ORDER BY 
-	start_time_ja DESC
+	start_time_ja ASC
+GO
 
+-- 集約していない状態の情報
+SELECT
+	start_time_ja,
+	start_time_utc,
+	database_name,
+	sku,
+	storage_in_megabytes,
+	avg_cpu_percent,
+	avg_data_io_percent,
+	avg_log_write_percent,
+	max_worker_percent,
+	max_session_percent,
+	dtu_limit,
+	dwu_size,
+	xtp_storage_percent
+FROM
+(
+	SELECT
+		DATEADD(hh, 9, start_time) AS start_time_ja,
+		start_time AS start_time_utc,
+		database_name,
+		sku,
+		storage_in_megabytes,
+		avg_cpu_percent,
+		avg_data_io_percent,
+		avg_log_write_percent,
+		max_worker_percent,
+		max_session_percent,
+		dtu_limit,
+		CAST(dtu_limit / 7.5 AS int) AS dwu_size, 
+		xtp_storage_percent,
+		CASE CHARINDEX('_', database_name)
+		WHEN 0 THEN
+			0
+		ELSE
+				SUBSTRING(database_name, 
+						  CHARINDEX('_', database_name) + 1, 
+						  (LEN(database_name) - CHARINDEX(database_name, '_'))
+			)
+		END AS sort_order
+	FROM
+		sys.resource_stats
+	WHERE
+		sku = 'DW'
+) T
+ORDER BY
+	start_time_ja ASC,a
+	sort_order ASC
