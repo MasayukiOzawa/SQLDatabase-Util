@@ -60,13 +60,13 @@ ORDER BY
 	ps.distribution_id
 GO
 
-
 -- オブジェクトのデータ格納状態の取得
 SELECT
 	ps.pdw_node_id,
 	ps.distribution_id,
 	o.name,
 	i.type_desc,
+	tdp.distribution_policy_desc,
 	i.name,
 	SUM(ps.used_page_count) * 8.0 / 1024.0 AS used_page_MB,
 	SUM(ps.row_count) AS row_count
@@ -108,18 +108,21 @@ FROM
 		i.object_id = im.object_id
 		AND
 		i.index_id = im.index_id
+	LEFT JOIN 
+		sys.pdw_table_distribution_properties tdp
+	ON
+		tdp.object_id = o.object_id
 GROUP BY
 	ps.pdw_node_id,
 	ps.distribution_id,
 	o.name,
 	i.name,
-	i.type_desc
+	i.type_desc,
+	tdp.distribution_policy_desc
 ORDER BY
 	o.name,
 	ps.distribution_id
 GO
-
-
 
 -- オブジェクトのデータ格納状態の取得
 SELECT
