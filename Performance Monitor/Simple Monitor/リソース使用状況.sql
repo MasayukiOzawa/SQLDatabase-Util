@@ -63,7 +63,7 @@ SELECT
 FROM
 (
 SELECT 
-	end_date,
+ 	end_date,
 	service_objective,
 	counter_name,
 	cntr_value AS cntr_value_diff
@@ -72,13 +72,15 @@ FROM
 WHERE 
 	end_date >= DATEADD(HOUR, @TargetHour * -1, DATEADD(HOUR, 9, GETUTCDATE()))
 	AND
-	(object_name LIKE  '%Workload Group Stats'	AND counter_name LIKE 'Disk%' AND cntr_type = 65792)
-	OR
-	(object_name = 'sys.dm_db_resource_stats')
-	OR
-	(counter_name LIKE 'CPU usage [%]%')
-	OR
-	(counter_name IN('User Connections', 'active_workers_count', 'allocated_extent_megabytes'))
+	(
+		(object_name LIKE  '%Workload Group Stats'	AND counter_name LIKE 'Disk%' AND cntr_type = 65792)
+		OR
+		(object_name = 'sys.dm_db_resource_stats')
+		OR
+		(counter_name LIKE 'CPU usage [%]%')
+		OR
+		(counter_name IN('User Connections', 'active_workers_count', 'allocated_extent_megabytes'))
+	)
 
 UNION
 
@@ -90,9 +92,10 @@ SELECT
 FROM 
 	Simple_Monitor 
 WHERE 
-	counter_name = 'Database Cache Memory (KB)'
-	AND
 	end_date >= DATEADD(HOUR, @TargetHour * -1, DATEADD(HOUR, 9, GETUTCDATE()))
+	AND
+	counter_name = 'Database Cache Memory (KB)'
+
 
 UNION
 
