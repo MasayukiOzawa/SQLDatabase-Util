@@ -12,7 +12,7 @@ CREATE TABLE Simple_Monitor (
 ) WITH (DATA_COMPRESSION=PAGE)
 GO
 */
--- Interval : 5 sec / Acquisition Time : 1 hour / Size : 3.5 MB (1 day : 84 MB)
+-- Interval : 5 sec / Acquisition Time : 1 hour / Size : 5.5 MB (1 day : 135 MB)
 
 SET NOCOUNT ON
 GO
