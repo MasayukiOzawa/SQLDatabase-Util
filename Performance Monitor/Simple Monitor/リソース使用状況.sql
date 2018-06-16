@@ -47,14 +47,14 @@ SELECT
 
 	-- Check Point (Pages : 1 Page = 8kb)
 	[Checkpoint pages/sec],
-	CAST([Page writes/sec] * 8.0 / 1024 AS numeric(10,3)) AS  [Page write KBytes/sec], 
-	CAST([Background writer pages/sec] * 8.0  /1024 AS numeric(10,3)) AS  [Background writer KBytes/sec],
+	CAST([Page writes/sec] * 8.0 / 1024 AS numeric(10,3)) AS  [Page write MBytes/sec], 
+	CAST([Background writer pages/sec] * 8.0  /1024 AS numeric(10,3)) AS  [Background writer MBytes/sec],
 
 	-- DTU Log
 	[avg_log_write_percent], 
 
 	-- Transaction Log
-	CAST([Log Bytes Flushed/sec] / POWER(1024.0,2) AS numeric(10,3)) AS [Log Bytes Flushed/sec],
+	CAST([Log Bytes Flushed/sec] / POWER(1024.0,2) AS numeric(10,3)) AS [Log MBytes Flushed/sec],
 	[Log Flushes/sec], 
 	[Log Writer Writes/sec],
 
