@@ -1,5 +1,10 @@
 # SQLDatabaseUtil
-SQL Database の各種システムビュー/動的管理ビューから情報を取得するためのクエリのサンプル群です。
+
+## クエリの最新版は [SQL Server Util](https://github.com/MasayukiOzawa/SQLServer-Util) に移動しました。  
+## 本リポジトリのクエリは更新されていません。
+
+SQL Database の各種システムビュー/動的管理ビューから情報を取得するための
+クエリのサンプル群です。
 
 種類ごとに階層化していますので、各種情報を取得する際のサンプルとしてご利用ください。
 
